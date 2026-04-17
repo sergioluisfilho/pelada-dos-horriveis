@@ -580,6 +580,24 @@
         width: 100%;
         margin-top: 0.5rem;
       }
+      .new-game-btn {
+        background: var(--card);
+        border: 1.5px solid var(--green-dim);
+        border-radius: 12px;
+        color: var(--green);
+        cursor: pointer;
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.3rem;
+        letter-spacing: 2px;
+        padding: 0.9rem;
+        width: 100%;
+        transition: background 0.15s;
+      }
+      .new-game-btn:active {
+        background: var(--green-dim);
+        color: #fff;
+      }
+
       .back-btn {
         background: var(--card);
         border: 1.5px solid var(--border);
@@ -876,6 +894,7 @@
         📋 &nbsp; Copiar para Planilha
       </button>
       <button class="back-btn" onclick="goBack()">← Voltar e Corrigir</button>
+      <button class="new-game-btn" onclick="newGame()">⚽ &nbsp; Nova Pelada</button>
     </div>
 
     <div class="toast" id="toast"></div>
@@ -1146,6 +1165,18 @@
       }
 
       function goHome() {
+        showScreen("setup");
+      }
+
+      function newGame() {
+        clearSession();
+        Object.keys(state.scores).forEach((p) => {
+          state.scores[p] = { goals: 0, assists: 0 };
+        });
+        state.date = "";
+        const today = new Date().toISOString().split("T")[0];
+        document.getElementById("game-date").value = today;
+        renderSetup();
         showScreen("setup");
       }
 
