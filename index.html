@@ -580,6 +580,22 @@
         width: 100%;
         margin-top: 0.5rem;
       }
+      .sheets-btn {
+        background: #1a6b3a;
+        border: none;
+        border-radius: 12px;
+        color: #fff;
+        cursor: pointer;
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.3rem;
+        letter-spacing: 2px;
+        padding: 0.9rem;
+        width: 100%;
+        transition: opacity 0.15s;
+      }
+      .sheets-btn:active { opacity: 0.8; }
+      .sheets-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
       .new-game-btn {
         background: var(--card);
         border: 1.5px solid var(--green-dim);
@@ -842,6 +858,24 @@
       +
     </button>
 
+    <!-- Modal token Google Sheets -->
+    <div class="add-game-modal" id="token-modal">
+      <div class="add-game-modal-inner">
+        <div class="section-label">🔑 Senha para enviar</div>
+        <div class="add-game-modal-row">
+          <input
+            type="password"
+            id="token-input"
+            placeholder="Digite a senha..."
+            autocomplete="off"
+            onkeydown="if(event.key==='Enter'){confirmSendToSheets();}"
+          />
+          <button onclick="confirmSendToSheets()">→</button>
+        </div>
+        <button class="modal-cancel" onclick="closeTokenModal()">Cancelar</button>
+      </div>
+    </div>
+
     <!-- Modal add player during game -->
     <div class="add-game-modal" id="add-game-modal">
       <div class="add-game-modal-inner">
@@ -892,6 +926,9 @@
 
       <button class="export-btn" onclick="exportData()">
         📋 &nbsp; Copiar para Planilha
+      </button>
+      <button class="sheets-btn" id="sheets-btn" onclick="sendToSheets()">
+        📊 &nbsp; Enviar para Google Sheets
       </button>
       <button class="back-btn" onclick="goBack()">← Voltar e Corrigir</button>
       <button class="new-game-btn" onclick="newGame()">⚽ &nbsp; Nova Pelada</button>
@@ -1127,6 +1164,57 @@
           .join("");
 
         showScreen("results");
+      }
+
+      const SHEETS_URL = "https://script.google.com/macros/s/AKfycby79KOYmxgGp88IYcbPqz9QsG0mfbrTXKGKcy4A0vOE100NeYZkQMGbV22OFm7tYosX4Q/exec";
+
+      function sendToSheets() {
+        document.getElementById("token-modal").classList.add("open");
+        setTimeout(() => document.getElementById("token-input").focus(), 100);
+      }
+
+      function closeTokenModal() {
+        document.getElementById("token-modal").classList.remove("open");
+        document.getElementById("token-input").value = "";
+      }
+
+      async function confirmSendToSheets() {
+        const token = document.getElementById("token-input").value.trim();
+        if (!token) return;
+        closeTokenModal();
+
+        const btn = document.getElementById("sheets-btn");
+        btn.disabled = true;
+        btn.textContent = "⏳  Enviando...";
+
+        const rows = Object.keys(state.active)
+          .filter((p) => state.active[p])
+          .sort((a, b) => a.localeCompare(b))
+          .map((p) => ({
+            date: state.date,
+            player: p,
+            goals: state.scores[p].goals,
+            assists: state.scores[p].assists,
+            total: state.scores[p].goals + state.scores[p].assists,
+          }));
+
+        try {
+          const res = await fetch(`${SHEETS_URL}?token=${token}`, {
+            method: "POST",
+            body: JSON.stringify(rows),
+          });
+          const json = await res.json();
+          if (json.ok) {
+            showToast(`✅ ${json.inserted} linhas enviadas!`);
+            btn.textContent = "✅  Enviado!";
+          } else {
+            throw new Error(json.error || "token inválido");
+          }
+        } catch (err) {
+          showToast("❌ Erro: " + err.message);
+          btn.disabled = false;
+          btn.innerHTML = "📊 &nbsp; Enviar para Google Sheets";
+        }
       }
 
       function exportData() {
