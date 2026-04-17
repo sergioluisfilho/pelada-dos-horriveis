@@ -1,0 +1,1246 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <title>Pelada dos Horríveis</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0f1a0f;
+        --card: #192919;
+        --card2: #1f351f;
+        --green: #3db35d;
+        --green-dim: #2a7a40;
+        --yellow: #f5c518;
+        --red: #e8483a;
+        --red-dim: #9b2d23;
+        --text: #f0f0f0;
+        --text-dim: #7a9a7a;
+        --border: #2a3f2a;
+        --pill: #243824;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      body {
+        font-family: "Nunito", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      /* ── SCREENS ── */
+      .screen {
+        display: none;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      .screen.active {
+        display: flex;
+      }
+
+      /* ══ SCREEN 1: SETUP ════════════════════════════════ */
+      #screen-setup {
+        padding: 2rem 1.2rem 2rem;
+        gap: 1.5rem;
+      }
+
+      .logo {
+        text-align: center;
+        padding-top: 1rem;
+      }
+      .logo-ball {
+        font-size: 3rem;
+        display: block;
+      }
+      .logo-title {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 2.4rem;
+        letter-spacing: 3px;
+        color: #fff;
+        line-height: 1;
+      }
+      .logo-sub {
+        font-size: 0.75rem;
+        color: var(--text-dim);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-top: 4px;
+      }
+
+      .section-label {
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--green);
+        margin-bottom: 0.6rem;
+      }
+
+      .date-input-row {
+        display: flex;
+        align-items: center;
+        background: var(--card);
+        border: 1.5px solid var(--border);
+        border-radius: 12px;
+        padding: 0.8rem 1rem;
+        gap: 0.8rem;
+      }
+      .date-input-row span {
+        font-size: 1.3rem;
+      }
+      .date-input-row input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        color: var(--text);
+        font-family: "Nunito", sans-serif;
+        font-size: 1.1rem;
+        font-weight: 700;
+        outline: none;
+      }
+      .date-input-row input::-webkit-calendar-picker-indicator {
+        filter: invert(1);
+        opacity: 0.5;
+      }
+
+      /* Player list */
+      .player-setup-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        max-height: 38vh;
+        overflow-y: auto;
+        padding-right: 2px;
+      }
+      .player-setup-list::-webkit-scrollbar {
+        width: 3px;
+      }
+      .player-setup-list::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+      .player-setup-list::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 2px;
+      }
+
+      .player-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--card);
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        padding: 0.65rem 0.9rem;
+        cursor: pointer;
+        transition: all 0.15s;
+        user-select: none;
+      }
+      .player-toggle.off {
+        opacity: 0.38;
+        border-style: dashed;
+      }
+      .player-toggle .pname {
+        font-weight: 700;
+        font-size: 1rem;
+      }
+      .player-toggle .ptoggle-icon {
+        font-size: 1.1rem;
+      }
+
+      .add-player-row {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 0.3rem;
+      }
+      .add-player-row input {
+        flex: 1;
+        background: var(--card);
+        border: 1.5px dashed var(--border);
+        border-radius: 10px;
+        color: var(--text);
+        font-family: "Nunito", sans-serif;
+        font-size: 0.95rem;
+        font-weight: 600;
+        padding: 0.65rem 0.9rem;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .add-player-row input:focus {
+        border-color: var(--green);
+        border-style: solid;
+      }
+      .add-player-row button {
+        background: var(--green-dim);
+        border: none;
+        border-radius: 10px;
+        color: #fff;
+        cursor: pointer;
+        font-size: 1.4rem;
+        font-weight: 900;
+        padding: 0 1rem;
+        transition: background 0.15s;
+      }
+      .add-player-row button:active {
+        background: var(--green);
+      }
+
+      .start-btn {
+        background: linear-gradient(135deg, var(--green-dim), var(--green));
+        border: none;
+        border-radius: 14px;
+        color: #fff;
+        cursor: pointer;
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.5rem;
+        letter-spacing: 2px;
+        padding: 1rem;
+        width: 100%;
+        transition:
+          opacity 0.15s,
+          transform 0.1s;
+        margin-top: auto;
+      }
+      .start-btn:active {
+        transform: scale(0.98);
+        opacity: 0.9;
+      }
+      .active-count {
+        text-align: center;
+        font-size: 0.8rem;
+        color: var(--text-dim);
+        margin-top: -0.5rem;
+      }
+      .active-count span {
+        color: var(--yellow);
+        font-weight: 800;
+      }
+
+      /* ══ SCREEN 2: GAME ══════════════════════════════════ */
+      #screen-game {
+        padding: 0;
+      }
+
+      .game-header {
+        background: var(--card);
+        border-bottom: 1px solid var(--border);
+        padding: 0.75rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+      .game-header-left {
+        display: flex;
+        flex-direction: column;
+      }
+      .game-title {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.4rem;
+        letter-spacing: 2px;
+        color: #fff;
+        line-height: 1;
+      }
+      .game-date-input {
+        background: transparent;
+        border: none;
+        color: var(--text-dim);
+        font-family: "Nunito", sans-serif;
+        font-size: 0.72rem;
+        font-weight: 600;
+        outline: none;
+        cursor: pointer;
+        padding: 0;
+      }
+      .game-date-input::-webkit-calendar-picker-indicator {
+        filter: invert(1);
+        opacity: 0.4;
+        width: 12px;
+        height: 12px;
+      }
+
+      .home-btn {
+        background: transparent;
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        color: var(--text-dim);
+        cursor: pointer;
+        font-size: 1.1rem;
+        font-weight: 900;
+        padding: 0.35rem 0.65rem;
+        transition: border-color 0.15s, color 0.15s;
+        flex-shrink: 0;
+      }
+      .home-btn:active {
+        border-color: var(--green);
+        color: var(--green);
+      }
+
+      .done-btn {
+        background: var(--yellow);
+        border: none;
+        border-radius: 8px;
+        color: #000;
+        cursor: pointer;
+        font-family: "Nunito", sans-serif;
+        font-size: 0.8rem;
+        font-weight: 900;
+        letter-spacing: 1px;
+        padding: 0.45rem 0.9rem;
+        text-transform: uppercase;
+      }
+
+      /* Column headers */
+      .col-headers {
+        display: grid;
+        grid-template-columns: 1fr 72px 72px 72px;
+        gap: 4px;
+        padding: 0.4rem 0.8rem;
+        background: var(--bg);
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 57px;
+        z-index: 9;
+      }
+      .col-hdr {
+        font-size: 0.65rem;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        text-align: center;
+        color: var(--text-dim);
+      }
+      .col-hdr:first-child {
+        text-align: left;
+      }
+
+      .player-cards {
+        flex: 1;
+        padding: 0.5rem 0.6rem 6rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+      }
+
+      .player-card {
+        display: grid;
+        grid-template-columns: 1fr 72px 72px 72px;
+        gap: 4px;
+        align-items: center;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 0.5rem 0.6rem;
+        transition: border-color 0.2s;
+      }
+      .player-card.has-score {
+        border-color: var(--green-dim);
+        background: var(--card2);
+      }
+
+      .pc-name {
+        font-weight: 800;
+        font-size: 0.95rem;
+        padding-left: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .player-card.has-score .pc-name {
+        color: #fff;
+      }
+
+      .counter-cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+      }
+      .cnt-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-size: 1.1rem;
+        font-weight: 900;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition:
+          transform 0.08s,
+          opacity 0.1s;
+        user-select: none;
+        -webkit-user-select: none;
+        flex-shrink: 0;
+      }
+      .cnt-btn:active {
+        transform: scale(0.85);
+      }
+      .cnt-btn.plus {
+        background: var(--green-dim);
+        color: #fff;
+        font-size: 1.3rem;
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+      }
+      .cnt-btn.plus:active {
+        background: var(--green);
+      }
+      .cnt-btn.minus {
+        background: var(--pill);
+        color: var(--text-dim);
+        font-size: 1rem;
+        width: 22px;
+        height: 22px;
+        border-radius: 6px;
+      }
+      .cnt-btn.minus:active {
+        background: var(--red-dim);
+        color: #fff;
+      }
+      .cnt-value {
+        font-size: 1.1rem;
+        font-weight: 900;
+        color: var(--yellow);
+        min-width: 18px;
+        text-align: center;
+      }
+      .cnt-value.zero {
+        color: var(--text-dim);
+        font-weight: 600;
+      }
+
+      /* Total column */
+      .total-value {
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 900;
+        color: var(--green);
+      }
+      .total-value.zero {
+        color: #2a3f2a;
+      }
+
+      /* Floating summary */
+      .float-summary {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, var(--bg) 30%);
+        padding: 1.5rem 1rem 1rem;
+        pointer-events: none;
+        z-index: 20;
+      }
+      .summary-pill {
+        background: var(--card2);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 0.6rem 1rem;
+        display: flex;
+        justify-content: space-around;
+        pointer-events: all;
+      }
+      .sum-item {
+        text-align: center;
+      }
+      .sum-num {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.6rem;
+        color: var(--yellow);
+        line-height: 1;
+      }
+      .sum-label {
+        font-size: 0.62rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--text-dim);
+      }
+
+      /* ══ SCREEN 3: RESULTS ═══════════════════════════════ */
+      #screen-results {
+        padding: 1rem 1rem 3rem;
+        gap: 1rem;
+      }
+
+      .results-header {
+        text-align: center;
+        padding: 1rem 0 0.5rem;
+      }
+      .results-header .trophy {
+        font-size: 2.5rem;
+      }
+      .results-header h2 {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 2rem;
+        letter-spacing: 2px;
+        color: var(--yellow);
+      }
+      .results-header p {
+        font-size: 0.8rem;
+        color: var(--text-dim);
+      }
+
+      .result-row {
+        display: grid;
+        grid-template-columns: 26px 1fr 48px 48px 52px;
+        align-items: center;
+        gap: 6px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 0.6rem 0.7rem;
+      }
+      .result-row.top1 {
+        border-color: var(--yellow);
+        background: #2a250a;
+      }
+      .result-row.top2 {
+        border-color: #aaa;
+        background: #1e2020;
+      }
+      .result-row.top3 {
+        border-color: #cd7f32;
+        background: #221510;
+      }
+      .rank-num {
+        font-weight: 900;
+        color: var(--text-dim);
+        font-size: 0.8rem;
+        text-align: center;
+      }
+      .result-name {
+        font-weight: 800;
+        font-size: 0.95rem;
+      }
+      .result-stat {
+        text-align: center;
+        font-weight: 700;
+        font-size: 0.9rem;
+      }
+      .result-stat.g {
+        color: var(--green);
+      }
+      .result-stat.a {
+        color: #5bb8f5;
+      }
+      .result-stat.pt {
+        color: var(--yellow);
+        font-size: 1rem;
+        font-weight: 900;
+      }
+
+      .result-headers {
+        display: grid;
+        grid-template-columns: 26px 1fr 48px 48px 52px;
+        gap: 6px;
+        padding: 0 0.7rem;
+        margin-bottom: -0.3rem;
+      }
+      .rh {
+        font-size: 0.62rem;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        text-align: center;
+      }
+      .rh:nth-child(2) {
+        text-align: left;
+      }
+
+      .export-btn {
+        background: var(--green-dim);
+        border: none;
+        border-radius: 12px;
+        color: #fff;
+        cursor: pointer;
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.3rem;
+        letter-spacing: 2px;
+        padding: 0.9rem;
+        width: 100%;
+        margin-top: 0.5rem;
+      }
+      .back-btn {
+        background: var(--card);
+        border: 1.5px solid var(--border);
+        border-radius: 12px;
+        color: var(--text-dim);
+        cursor: pointer;
+        font-family: "Nunito", sans-serif;
+        font-size: 0.9rem;
+        font-weight: 700;
+        padding: 0.75rem;
+        width: 100%;
+      }
+
+      /* Add player during game */
+      .fab-add {
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: var(--green-dim);
+        border: none;
+        color: #fff;
+        font-size: 1.6rem;
+        font-weight: 900;
+        cursor: pointer;
+        z-index: 30;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.5);
+        transition:
+          background 0.15s,
+          transform 0.1s;
+      }
+      .fab-add:active {
+        background: var(--green);
+        transform: scale(0.9);
+      }
+
+      .add-game-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 40;
+        align-items: flex-end;
+        justify-content: center;
+      }
+      .add-game-modal.open {
+        display: flex;
+      }
+      .add-game-modal-inner {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 18px 18px 0 0;
+        padding: 1.2rem 1rem 2rem;
+        width: 100%;
+        max-width: 480px;
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+      }
+      .add-game-modal-inner .section-label {
+        margin-bottom: 0;
+      }
+      .add-game-modal-row {
+        display: flex;
+        gap: 0.5rem;
+      }
+      .add-game-modal-row input {
+        flex: 1;
+        background: var(--bg);
+        border: 1.5px dashed var(--border);
+        border-radius: 10px;
+        color: var(--text);
+        font-family: "Nunito", sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        padding: 0.7rem 0.9rem;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .add-game-modal-row input:focus {
+        border-color: var(--green);
+        border-style: solid;
+      }
+      .add-game-modal-row button {
+        background: var(--green-dim);
+        border: none;
+        border-radius: 10px;
+        color: #fff;
+        cursor: pointer;
+        font-size: 1.4rem;
+        font-weight: 900;
+        padding: 0 1rem;
+        transition: background 0.15s;
+      }
+      .add-game-modal-row button:active {
+        background: var(--green);
+      }
+      .modal-cancel {
+        background: transparent;
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        color: var(--text-dim);
+        cursor: pointer;
+        font-family: "Nunito", sans-serif;
+        font-size: 0.9rem;
+        font-weight: 700;
+        padding: 0.65rem;
+        width: 100%;
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        background: var(--green);
+        color: #fff;
+        font-weight: 800;
+        font-size: 0.85rem;
+        padding: 0.6rem 1.2rem;
+        border-radius: 20px;
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          opacity 0.3s,
+          transform 0.3s;
+        white-space: nowrap;
+        z-index: 999;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ══ SCREEN 1: SETUP ════════════════════════════════ -->
+    <div id="screen-setup" class="screen active">
+      <div class="logo">
+        <span class="logo-ball">⚽</span>
+        <div class="logo-title">Pelada dos Horríveis</div>
+        <div class="logo-sub">Ficha digital · Sem papel</div>
+      </div>
+
+      <div>
+        <div class="section-label">📅 Data da Pelada</div>
+        <div class="date-input-row">
+          <span>📅</span>
+          <input type="date" id="game-date" />
+        </div>
+      </div>
+
+      <div
+        style="
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 0.6rem;
+          min-height: 0;
+        "
+      >
+        <div class="section-label">👥 Quem vai jogar hoje?</div>
+        <div class="player-setup-list" id="setup-player-list"></div>
+        <div class="add-player-row">
+          <input
+            type="text"
+            id="new-player-input"
+            placeholder="Novo jogador..."
+            autocomplete="off"
+            autocorrect="off"
+            spellcheck="false"
+            onkeydown="
+              if (event.key === 'Enter') {
+                addPlayer();
+                this.blur();
+              }
+            "
+          />
+          <button onclick="addPlayer()">+</button>
+        </div>
+        <div class="active-count" id="active-count"></div>
+      </div>
+
+      <button class="start-btn" onclick="startGame()">
+        ⚽ &nbsp; COMEÇAR PELADA
+      </button>
+    </div>
+
+    <!-- ══ SCREEN 2: GAME ════════════════════════════════ -->
+    <div id="screen-game" class="screen">
+      <div class="game-header">
+        <button class="home-btn" onclick="goHome()" title="Voltar ao início">←</button>
+        <div class="game-header-left">
+          <div class="game-title">⚽ Pelada dos Horríveis</div>
+          <input type="date" class="game-date-input" id="game-date-input" onchange="updateGameDate(this.value)" />
+        </div>
+        <button class="done-btn" onclick="showResults()">
+          Ver Resultado →
+        </button>
+      </div>
+
+      <div class="col-headers">
+        <div class="col-hdr">Jogador</div>
+        <div class="col-hdr">⚽ Gols</div>
+        <div class="col-hdr">🅰️ Assist.</div>
+        <div class="col-hdr">🔥 Total</div>
+      </div>
+
+      <div class="player-cards" id="player-cards"></div>
+
+      <div class="float-summary">
+        <div class="summary-pill">
+          <div class="sum-item">
+            <div class="sum-num" id="sum-goals">0</div>
+            <div class="sum-label">Gols</div>
+          </div>
+          <div class="sum-item">
+            <div class="sum-num" id="sum-assists">0</div>
+            <div class="sum-label">Assists.</div>
+          </div>
+          <div class="sum-item">
+            <div class="sum-num" id="sum-scorers">0</div>
+            <div class="sum-label">Com ponto</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAB add player during game -->
+    <button
+      class="fab-add"
+      id="fab-add"
+      style="display: none"
+      onclick="openAddGameModal()"
+      title="Adicionar jogador"
+    >
+      +
+    </button>
+
+    <!-- Modal add player during game -->
+    <div class="add-game-modal" id="add-game-modal">
+      <div class="add-game-modal-inner">
+        <div class="section-label">➕ Adicionar jogador ao jogo</div>
+        <div class="add-game-modal-row">
+          <input
+            type="text"
+            id="game-new-player-input"
+            placeholder="Nome do jogador..."
+            autocomplete="off"
+            autocorrect="off"
+            spellcheck="false"
+            onkeydown="
+              if (event.key === 'Enter') {
+                addPlayerDuringGame();
+                this.blur();
+              }
+            "
+          />
+          <button onclick="addPlayerDuringGame()">+</button>
+        </div>
+        <button class="modal-cancel" onclick="closeAddGameModal()">
+          Cancelar
+        </button>
+      </div>
+    </div>
+
+    <!-- ══ SCREEN 3: RESULTS ════════════════════════════ -->
+    <div id="screen-results" class="screen">
+      <div class="results-header">
+        <div class="trophy">🏆</div>
+        <h2>Resultado da Pelada</h2>
+        <p id="results-date-label"></p>
+      </div>
+
+      <div class="result-headers">
+        <div class="rh">#</div>
+        <div class="rh">Jogador</div>
+        <div class="rh">G</div>
+        <div class="rh">A</div>
+        <div class="rh">PT</div>
+      </div>
+
+      <div
+        id="results-list"
+        style="display: flex; flex-direction: column; gap: 0.35rem"
+      ></div>
+
+      <button class="export-btn" onclick="exportData()">
+        📋 &nbsp; Copiar para Planilha
+      </button>
+      <button class="back-btn" onclick="goBack()">← Voltar e Corrigir</button>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+      let players = [
+        "Adriel",
+        "Amaro",
+        "Arthur",
+        "Breno",
+        "Caio",
+        "Carlinhos",
+        "César",
+        "Daniel V.",
+        "Davi",
+        "Denys",
+        "Fernando",
+        "George",
+        "Gleidson",
+        "Heitor",
+        "Jack",
+        "Joao Guilherme",
+        "Kleber",
+        "Lucas M.",
+        "Mateus A.",
+        "Paulo",
+        "Pedro De Bruyne",
+        "Pedro Henrique",
+        "Ricardo",
+        "Rodrigo",
+        "Shell",
+        "Jair",
+        "Vini Daniel",
+        "Vini M.",
+        "Yann",
+        "Clow",
+        "China",
+        "William",
+        "Odenir",
+      ];
+
+      let state = {
+        active: {}, // name -> bool
+        scores: {}, // name -> {goals, assists}
+        date: "",
+      };
+
+      // Init state
+      players.sort((a, b) => a.localeCompare(b));
+      players.forEach((p) => {
+        state.active[p] = true;
+        state.scores[p] = { goals: 0, assists: 0 };
+      });
+
+      // Set today's date
+      const today = new Date();
+      document.getElementById("game-date").value = today
+        .toISOString()
+        .split("T")[0];
+
+      function renderSetup() {
+        const list = document.getElementById("setup-player-list");
+        const allPlayers = Object.keys(state.active).sort((a, b) =>
+          a.localeCompare(b),
+        );
+        list.innerHTML = allPlayers
+          .map(
+            (p) => `
+    <div class="player-toggle ${state.active[p] ? "" : "off"}" onclick="toggleSetup('${p.replace(/'/g, "\\'")}')">
+      <span class="pname">${p}</span>
+      <span class="ptoggle-icon">${state.active[p] ? "✅" : "❌"}</span>
+    </div>
+  `,
+          )
+          .join("");
+        const count = Object.values(state.active).filter(Boolean).length;
+        document.getElementById("active-count").innerHTML =
+          `<span>${count}</span> jogadores ativos hoje`;
+      }
+
+      function toggleSetup(name) {
+        state.active[name] = !state.active[name];
+        renderSetup();
+      }
+
+      function addPlayer() {
+        const inp = document.getElementById("new-player-input");
+        const name = inp.value.trim();
+        if (!name) return;
+        if (state.active[name] !== undefined) {
+          showToast("Jogador já existe!");
+          inp.value = "";
+          return;
+        }
+        state.active[name] = true;
+        state.scores[name] = { goals: 0, assists: 0 };
+        inp.value = "";
+        renderSetup();
+      }
+
+      function startGame() {
+        const d = document.getElementById("game-date").value;
+        if (d) {
+          const [y, m, day] = d.split("-");
+          state.date = `${day}/${m}/${y}`;
+        } else {
+          const t = new Date();
+          state.date = `${String(t.getDate()).padStart(2, "0")}/${String(t.getMonth() + 1).padStart(2, "0")}/${t.getFullYear()}`;
+        }
+        const rawDate = document.getElementById("game-date").value || new Date().toISOString().split("T")[0];
+        document.getElementById("game-date-input").value = rawDate;
+        clearSession();
+        renderGame();
+        showScreen("game");
+      }
+
+      function renderGame() {
+        const activePlayers = Object.keys(state.active)
+          .filter((p) => state.active[p])
+          .sort((a, b) => a.localeCompare(b));
+
+        const container = document.getElementById("player-cards");
+        container.innerHTML = activePlayers
+          .map((p) => {
+            const s = state.scores[p];
+            const total = s.goals + s.assists;
+            const safe = p.replace(/'/g, "\\'");
+            return `
+      <div class="player-card ${total > 0 ? "has-score" : ""}" id="card-${btoa(encodeURIComponent(p))}">
+        <div class="pc-name">${p}</div>
+
+        <div class="counter-cell">
+          <button class="cnt-btn minus" ontouchstart="" onclick="change('${safe}','goals',-1)">−</button>
+          <span class="cnt-value ${s.goals === 0 ? "zero" : ""}">${s.goals}</span>
+          <button class="cnt-btn plus" ontouchstart="" onclick="change('${safe}','goals',1)">+</button>
+        </div>
+
+        <div class="counter-cell">
+          <button class="cnt-btn minus" ontouchstart="" onclick="change('${safe}','assists',-1)">−</button>
+          <span class="cnt-value ${s.assists === 0 ? "zero" : ""}">${s.assists}</span>
+          <button class="cnt-btn plus" ontouchstart="" onclick="change('${safe}','assists',1)">+</button>
+        </div>
+
+        <div class="total-value ${total === 0 ? "zero" : ""}">${total}</div>
+      </div>
+    `;
+          })
+          .join("");
+        updateSummary();
+      }
+
+      function change(name, type, delta) {
+        const s = state.scores[name];
+        s[type] = Math.max(0, s[type] + delta);
+        saveSession();
+        // Update just the card
+        const total = s.goals + s.assists;
+        const cardId = `card-${btoa(encodeURIComponent(name))}`;
+        const card = document.getElementById(cardId);
+        if (!card) return;
+
+        card.className = `player-card ${total > 0 ? "has-score" : ""}`;
+        const cells = card.querySelectorAll(".counter-cell");
+
+        // goals cell
+        const gVal = cells[0].querySelector(".cnt-value");
+        gVal.textContent = s.goals;
+        gVal.className = `cnt-value ${s.goals === 0 ? "zero" : ""}`;
+
+        // assists cell
+        const aVal = cells[1].querySelector(".cnt-value");
+        aVal.textContent = s.assists;
+        aVal.className = `cnt-value ${s.assists === 0 ? "zero" : ""}`;
+
+        // total
+        const tv = card.querySelector(".total-value");
+        tv.textContent = total;
+        tv.className = `total-value ${total === 0 ? "zero" : ""}`;
+
+        updateSummary();
+      }
+
+      function updateSummary() {
+        const active = Object.keys(state.active).filter((p) => state.active[p]);
+        let goals = 0,
+          assists = 0,
+          scorers = 0;
+        active.forEach((p) => {
+          goals += state.scores[p].goals;
+          assists += state.scores[p].assists;
+          if (state.scores[p].goals + state.scores[p].assists > 0) scorers++;
+        });
+        document.getElementById("sum-goals").textContent = goals;
+        document.getElementById("sum-assists").textContent = assists;
+        document.getElementById("sum-scorers").textContent = scorers;
+      }
+
+      function showResults() {
+        const active = Object.keys(state.active)
+          .filter((p) => state.active[p])
+          .map((p) => ({
+            name: p,
+            ...state.scores[p],
+            total: state.scores[p].goals + state.scores[p].assists,
+          }))
+          .sort(
+            (a, b) =>
+              b.total - a.total ||
+              b.goals - a.goals ||
+              a.name.localeCompare(b.name),
+          );
+
+        document.getElementById("results-date-label").textContent = state.date;
+
+        const medals = ["🥇", "🥈", "🥉"];
+        const topClasses = ["top1", "top2", "top3"];
+
+        document.getElementById("results-list").innerHTML = active
+          .map(
+            (p, i) => `
+    <div class="result-row ${topClasses[i] || ""}">
+      <div class="rank-num">${medals[i] || i + 1}</div>
+      <div class="result-name">${p.name}</div>
+      <div class="result-stat g">${p.goals}</div>
+      <div class="result-stat a">${p.assists}</div>
+      <div class="result-stat pt">${p.total}</div>
+    </div>
+  `,
+          )
+          .join("");
+
+        showScreen("results");
+      }
+
+      function exportData() {
+        const active = Object.keys(state.active)
+          .filter((p) => state.active[p])
+          .sort((a, b) => a.localeCompare(b));
+
+        const lines = [
+          "Data\tJogador\tGols\tAssistências\tParticipações Totais",
+        ];
+        active.forEach((p) => {
+          const s = state.scores[p];
+          lines.push(
+            `${state.date}\t${p}\t${s.goals}\t${s.assists}\t${s.goals + s.assists}`,
+          );
+        });
+
+        const text = lines.join("\n");
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard
+            .writeText(text)
+            .then(() => showToast("✅ Copiado! Cole direto na planilha"));
+        } else {
+          const ta = document.createElement("textarea");
+          ta.value = text;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+          showToast("✅ Copiado! Cole direto na planilha");
+        }
+      }
+
+      function goBack() {
+        showScreen("game");
+      }
+
+      function goHome() {
+        showScreen("setup");
+      }
+
+      function updateGameDate(val) {
+        if (!val) return;
+        const [y, m, day] = val.split("-");
+        state.date = `${day}/${m}/${y}`;
+        document.getElementById("results-date-label").textContent = state.date;
+        saveSession();
+      }
+
+      function openAddGameModal() {
+        document.getElementById("add-game-modal").classList.add("open");
+        setTimeout(
+          () => document.getElementById("game-new-player-input").focus(),
+          100,
+        );
+      }
+
+      function closeAddGameModal() {
+        document.getElementById("add-game-modal").classList.remove("open");
+        document.getElementById("game-new-player-input").value = "";
+      }
+
+      function addPlayerDuringGame() {
+        const inp = document.getElementById("game-new-player-input");
+        const name = inp.value.trim();
+        if (!name) return;
+        if (state.active[name] !== undefined) {
+          showToast("Jogador já existe!");
+          inp.value = "";
+          return;
+        }
+        state.active[name] = true;
+        state.scores[name] = { goals: 0, assists: 0 };
+        closeAddGameModal();
+        renderGame();
+        saveSession();
+        showToast(`✅ ${name} adicionado!`);
+      }
+
+      function showScreen(name) {
+        document
+          .querySelectorAll(".screen")
+          .forEach((s) => s.classList.remove("active"));
+        document.getElementById("screen-" + name).classList.add("active");
+        document.getElementById("fab-add").style.display =
+          name === "game" ? "flex" : "none";
+        window.scrollTo(0, 0);
+      }
+
+      const SESSION_KEY = "pelada_session";
+
+      function saveSession() {
+        localStorage.setItem(SESSION_KEY, JSON.stringify({ state, screen: "game" }));
+      }
+
+      function clearSession() {
+        localStorage.removeItem(SESSION_KEY);
+      }
+
+      function restoreSession() {
+        try {
+          const raw = localStorage.getItem(SESSION_KEY);
+          if (!raw) return false;
+          const saved = JSON.parse(raw);
+          if (!saved.state || !saved.state.scores) return false;
+          Object.assign(state, saved.state);
+          const rawDate = Object.keys(saved.state.scores).length
+            ? (() => {
+                const [d, m, y] = (saved.state.date || "").split("/");
+                return y ? `${y}-${m}-${d}` : new Date().toISOString().split("T")[0];
+              })()
+            : new Date().toISOString().split("T")[0];
+          document.getElementById("game-date-input").value = rawDate;
+          document.getElementById("game-date-display") && (document.getElementById("game-date-display").textContent = saved.state.date);
+          renderGame();
+          showScreen("game");
+          showToast("♻️ Sessão restaurada!");
+          return true;
+        } catch (e) {
+          return false;
+        }
+      }
+
+      function showToast(msg) {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.classList.add("show");
+        setTimeout(() => t.classList.remove("show"), 2500);
+      }
+
+      if (!restoreSession()) {
+        renderSetup();
+      }
+    </script>
+  </body>
+</html>
